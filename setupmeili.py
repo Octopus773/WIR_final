@@ -10,11 +10,10 @@ def main():
             "tags",
             "genres",
             "rank",
-            "rating",
         ],
         'sortableAttributes': [
             'rank',
-            'rating:value',
+            'rating.value',
         ]
     })
 

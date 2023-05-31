@@ -60,7 +60,7 @@ body {
 }
 
 .right-panel {
-  margin-left: 210px;
+  margin-left: clamp(200px, 25%, 400px);
 }
 
 .ais-InstantSearch {
