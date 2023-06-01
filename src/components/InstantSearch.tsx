@@ -57,8 +57,24 @@ const searchPresets = {
   albums: {
     indexName: "albums",
     defaultRefinement: "albums:title:asc",
-    sortItems: [],
-    attributesForFaceting: [],
+    sortItems: [
+      {
+        value: "albums:title:asc",
+        label: "Title (asc)",
+      },
+    ],
+    attributesForFaceting: [
+      {
+        name: "Tags",
+        attribute: "tags",
+        type: "string",
+      },
+      {
+        name: "Genre",
+        attribute: "genres",
+        type: "string",
+      },
+    ],
     hitComponent: ArtistHit,
   },
 };
@@ -68,7 +84,10 @@ type AppInstantSearchProps = {
   searchClient?: any;
 };
 
-const AppInstantSearch = ({ indexName, searchClient }: AppInstantSearchProps) => {
+const AppInstantSearch = ({
+  indexName,
+  searchClient,
+}: AppInstantSearchProps) => {
   // const [indexName, setIndexName] = React.useState("albums");
   return (
     <div className="ais-InstantSearch">

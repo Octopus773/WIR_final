@@ -28,8 +28,8 @@ function App() {
         onChange={() => setIndexName("albums")}
       />{" "}
       Albums <br />
-      <AppInstantSearch indexName={indexName} searchClient={searchClient} />
-      {/* {(() => {
+      {/* <AppInstantSearch indexName={indexName} searchClient={searchClient} /> */}
+      {(() => {
         if (indexName === "albums") {
           return (
             <AppInstantSearch
@@ -46,7 +46,7 @@ function App() {
             />
           );
         }
-      })()} */}
+      })()}
     </div>
   );
 }

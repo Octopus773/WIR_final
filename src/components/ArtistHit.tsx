@@ -71,6 +71,7 @@ const Hit = ({ hit }: any) => {
                   style={{
                     display: "flex",
                     flexDirection: "row",
+                    flexWrap: "wrap",
                   }}
                 >
                   {(hit.tags ?? []).map((t: string) => (

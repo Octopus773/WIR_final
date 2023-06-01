@@ -34,6 +34,7 @@ const Hit = ({ hit }: any) => {
           <img
             style={{
               flexShrink: 0,
+              maxWidth: "30%",
             }}
             src={hit.cover}
             alt={hit.title}
@@ -60,7 +61,7 @@ const Hit = ({ hit }: any) => {
                   .map((ac: any) => {
                     return ac.name + " " + ac.joinphrase;
                   })
-                  .join(" ")}
+                  .join("")}
               </div>
             </div>
             <div style={dataDivStyle}>
@@ -69,6 +70,7 @@ const Hit = ({ hit }: any) => {
                 style={{
                   display: "flex",
                   flexDirection: "row",
+                  flexWrap: "wrap",
                 }}
               >
                 {(hit.tags ?? []).map((t: string) => (
@@ -91,6 +93,7 @@ const Hit = ({ hit }: any) => {
                 style={{
                   display: "flex",
                   flexDirection: "row",
+                  flexWrap: "wrap",
                 }}
               >
                 {(hit.genres ?? []).map((t: string) => (
@@ -138,6 +141,7 @@ const Hit = ({ hit }: any) => {
                     let children = m.map((t: any) => {
                       let date = "";
                       let length = "";
+                      let rating = "";
                       if (t["first_release"]) {
                         date = " (" + t["first_release"] + ")";
                       }
@@ -148,7 +152,18 @@ const Hit = ({ hit }: any) => {
                           secs_str = "0" + Math.floor(secs);
                         }
                         length =
-                          Math.floor(t["length"] / 60000) + ":" + secs_str;
+                          " ⏱️: " +
+                          Math.floor(t["length"] / 60000) +
+                          ":" +
+                          secs_str;
+                      }
+                      if (t?.rating?.value) {
+                        rating =
+                          "⭐: " +
+                          t["rating"]["value"] +
+                          " (" +
+                          t["rating"]["votes-count"] +
+                          ")";
                       }
                       return (
                         <div
@@ -159,11 +174,14 @@ const Hit = ({ hit }: any) => {
                             alignItems: "center",
                           }}
                         >
-                          <div>
-                            {" "}
-                            - {t.title} {length}
+                          <div> - {t.title}</div>
+                          <div
+                            style={{
+                              flexShrink: 0,
+                            }}
+                          >
+                            {rating} {length} {date}
                           </div>
-                          <div>{date}</div>
                         </div>
                       );
                     });
@@ -189,12 +207,17 @@ const Hit = ({ hit }: any) => {
                     );
                   })}
                 </div>
-                <div style={{
-                  display: "flex",
-                  gap: "10px",
-                }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                  }}
+                >
                   <a
-                    href={"https://musicbrainz.org/release-group/" + hit["parent_album_id"]}
+                    href={
+                      "https://musicbrainz.org/release-group/" +
+                      hit["parent_album_id"]
+                    }
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -207,7 +230,6 @@ const Hit = ({ hit }: any) => {
                   >
                     Artist
                   </a>
-
 
                   <button
                     style={{
@@ -228,6 +250,15 @@ const Hit = ({ hit }: any) => {
           <Highlight attribute="title" hit={hit} />
         </div>
         <img src={hit.cover} alt={hit.title} />
+        {hit["artist_credit"].length > 0 && (
+          <div className="hit-description">
+            {hit["artist_credit"]
+              .map((ac: any) => {
+                return ac.name + " " + ac.joinphrase;
+              })
+              .join("")}
+          </div>
+        )}
       </div>
     </>
   );
