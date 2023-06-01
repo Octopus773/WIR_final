@@ -207,6 +207,31 @@ const Hit = ({ hit }: any) => {
                     );
                   })}
                 </div>
+                <div>
+                  Related links
+                  <div
+                    style={{
+                      marginLeft: "10px",
+                    }}
+                  >
+                    {(hit["rels"] ?? [])
+                      .filter((r: any) => r.ressouce && r.type)
+                      .map((r: any) => {
+                        return (
+                          <div style={dataDivStyle}>
+                            <a
+                              href={r.ressouce}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {r.ressouce}
+                            </a>
+                            <div>{r.type}</div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
                 <div
                   style={{
                     display: "flex",
