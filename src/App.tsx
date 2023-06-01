@@ -12,23 +12,24 @@ function App() {
   });
   return (
     <div className="App">
-      <input
-        type="radio"
-        name="index"
-        value="artists"
-        checked={indexName === "artists"}
-        onChange={() => setIndexName("artists")}
-      />{" "}
-      Artists <br />
-      <input
-        type="radio"
-        name="index"
-        value="albums"
-        checked={indexName === "albums"}
-        onChange={() => setIndexName("albums")}
-      />{" "}
-      Albums <br />
-      {/* <AppInstantSearch indexName={indexName} searchClient={searchClient} /> */}
+        <input
+          type="radio"
+          name="index"
+          value="artists"
+          id="artists"
+          checked={indexName === "artists"}
+          onChange={() => setIndexName("artists")}
+        />
+        <label htmlFor="artists">Artists</label>
+        <input
+          type="radio"
+          name="index"
+          value="albums"
+          id="albums"
+          checked={indexName === "albums"}
+          onChange={() => setIndexName("albums")}
+        />
+        <label htmlFor="albums">Albums</label>
       {(() => {
         if (indexName === "albums") {
           return (

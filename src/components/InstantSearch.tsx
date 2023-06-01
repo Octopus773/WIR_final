@@ -91,7 +91,8 @@ const AppInstantSearch = ({
   // const [indexName, setIndexName] = React.useState("albums");
   return (
     <div className="ais-InstantSearch">
-      <p>The data is from musicbranz and is limited</p>
+      <p>Datset is composed of top 1000 artists from spotify and 10785 of their albums</p>
+      <p>Search is based on every fields you can see when clicking a result card</p>
       <InstantSearch
         indexName={(searchPresets as any)[indexName]}
         searchClient={searchClient}
