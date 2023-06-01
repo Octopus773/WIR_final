@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  front:
+    restart: unless-stopped
+    environment:
+      - NGINX_PORT=80
+    build: .
+    depends_on:
+      - meilisearch
+    ports:
+      - "80:80"
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.1
+    restart: unless-stopped
+    environment:
+      - MEILI_ENV=development
+    ports:
+      - "7700:7700"
+    volumes:
+      - ./meili_data:/meili_data

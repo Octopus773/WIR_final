@@ -5,9 +5,9 @@ import AppInstantSearch from "./components/InstantSearch";
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 
 function App() {
-  const [indexName, setIndexName] = React.useState("albums");
+  const [indexName, setIndexName] = React.useState("artists");
 
-  const searchClient = instantMeiliSearch("http://localhost:7700", "", {
+  const searchClient = instantMeiliSearch("https://8350-194-206-82-150.ngrok-free.app/", "", {
     finitePagination: true,
   });
   return (
