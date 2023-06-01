@@ -13,6 +13,9 @@ const Hit = ({ hit }: any) => {
     alignItems: "flex-start",
     justifyContent: "space-between",
   } as React.CSSProperties;
+  if (!hit["parent_album_id"]) {
+    return <>Loading ...</>;
+  }
   return (
     <>
       <Modal
@@ -53,7 +56,7 @@ const Hit = ({ hit }: any) => {
             <div style={dataDivStyle}>
               <div>Artist(s):</div>{" "}
               <div>
-                {hit["artist_credit"]
+                {(hit["artist_credit"] ?? [])
                   .map((ac: any) => {
                     return ac.name + " " + ac.joinphrase;
                   })
@@ -83,9 +86,31 @@ const Hit = ({ hit }: any) => {
               </div>
             </div>
             <div style={dataDivStyle}>
-              <div>Media info:</div>{" "}
+              <div>Genres:</div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                {(hit.genres ?? []).map((t: string) => (
+                  <div
+                    style={{
+                      backgroundColor: "#eee",
+                      borderRadius: "5px",
+                      padding: "5px",
+                      marginRight: "5px",
+                    }}
+                  >
+                    {t}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={dataDivStyle}>
+              <div>Media info:</div>
               <div>
-                {hit.media_infos.map((mi: any) => {
+                {(hit.media_infos ?? []).map((mi: any) => {
                   let format = "";
                   if (mi.format) {
                     format = " (" + mi.format + ")";
@@ -94,42 +119,14 @@ const Hit = ({ hit }: any) => {
                 })}
               </div>
             </div>
-            {hit?.rating?.value && (
-              <div style={dataDivStyle}>
-                <div>Rating:</div>
-                <div>
-                  {hit.rating["value"]} ({hit.rating["votes-count"]})
-                </div>
-              </div>
-            )}
-            {hit["life-span"]?.begin && (
-              <div style={dataDivStyle}>
-                <div>Life span:</div>{" "}
-                <div>
-                  {Object.values(hit["life-span"])
-                    .filter((e) => e != null)
-                    .join(" - ")}
-                </div>
-              </div>
-            )}
-            {hit["begin_area"]?.name && (
-              <div style={dataDivStyle}>
-                <div>Begin area:</div> <div>{hit["begin_area"].name}</div>
-              </div>
-            )}
-            {hit["aliases"] && (
-              <div style={dataDivStyle}>
-                <div>Aliases:</div> <div>{hit["aliases"].join(", ")}</div>
-              </div>
-            )}
-            {hit["release_groups"] && (
+            {hit["tracks"] && (
               <div
                 style={{
                   display: "flex",
                   flexDirection: "column",
                 }}
               >
-                Release groups:{" "}
+                Tracks:{" "}
                 <div
                   style={{
                     display: "flex",
@@ -137,34 +134,80 @@ const Hit = ({ hit }: any) => {
                     marginLeft: "10px",
                   }}
                 >
-                  {(hit["release_groups"] ?? []).map((rg: any) => {
-                    let date = "";
-                    if (rg["first-release-date"]) {
-                      date = " (" + rg["first-release-date"] + ")";
-                    }
+                  {(hit["tracks"] ?? []).map((m: any, idx: number) => {
+                    let children = m.map((t: any) => {
+                      let date = "";
+                      let length = "";
+                      if (t["first_release"]) {
+                        date = " (" + t["first_release"] + ")";
+                      }
+                      if (t["length"]) {
+                        let secs = (t["length"] % 60000) / 1000;
+                        let secs_str = Math.floor(secs).toString();
+                        if (secs < 10) {
+                          secs_str = "0" + Math.floor(secs);
+                        }
+                        length =
+                          Math.floor(t["length"] / 60000) + ":" + secs_str;
+                      }
+                      return (
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>
+                            {" "}
+                            - {t.title} {length}
+                          </div>
+                          <div>{date}</div>
+                        </div>
+                      );
+                    });
+
                     return (
                       <div
                         style={{
                           display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
+                          flexDirection: "column",
                         }}
                       >
-                        <div> - {rg.title}</div>
-                        <div>{date}</div>
+                        <div>{"Media " + (idx + 1) + ":"}</div>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            marginLeft: "10px",
+                          }}
+                        >
+                          {children}
+                        </div>
                       </div>
                     );
                   })}
                 </div>
-                <div>
+                <div style={{
+                  display: "flex",
+                  gap: "10px",
+                }}>
                   <a
-                    href={"https://musicbrainz.org/artist/" + hit["mbid"]}
+                    href={"https://musicbrainz.org/release-group/" + hit["parent_album_id"]}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    See artist on MusicBrainz
+                    Album
                   </a>
+                  <a
+                    href={"https://musicbrainz.org/artist/" + hit["artist_id"]}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Artist
+                  </a>
+
 
                   <button
                     style={{

@@ -16,6 +16,13 @@ const Hit = ({ hit }: any) => {
       alignItems: "flex-start",
       justifyContent: "space-between",
     } as React.CSSProperties;
+    if (hit["parent_album_id"]) {
+      return (
+        <>
+         Loading...
+        </>
+      )
+    }
     return (
       <>
         <Modal
@@ -84,7 +91,7 @@ const Hit = ({ hit }: any) => {
                 <div>Type:</div> <div>{hit.type}</div>
               </div>
               <div style={dataDivStyle}>
-                <div>Rating:</div>{" "}
+                <div>Rating:</div>
                 <div>
                   {hit.rating["value"]} ({hit.rating["votes-count"]})
                 </div>

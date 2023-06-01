@@ -18,7 +18,6 @@ import {
   Snippet,
 } from "react-instantsearch-dom";
 import "instantsearch.css/themes/algolia-min.css";
-import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 
 import ArtistHit from "./ArtistHit";
 import AlbumHit from "./AlbumHit";
@@ -64,12 +63,13 @@ const searchPresets = {
   },
 };
 
-const searchClient = instantMeiliSearch("http://localhost:7700", "", {
-  finitePagination: true,
-});
+type AppInstantSearchProps = {
+  indexName: string;
+  searchClient?: any;
+};
 
-const AppInstantSearch = () => {
-  const [indexName, setIndexName] = React.useState("albums");
+const AppInstantSearch = ({ indexName, searchClient }: AppInstantSearchProps) => {
+  // const [indexName, setIndexName] = React.useState("albums");
   return (
     <div className="ais-InstantSearch">
       <p>The data is from musicbranz and is limited</p>
